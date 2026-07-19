@@ -1,10 +1,15 @@
 <p align="center">
-  <img src="webview/assets/logo-lockup.svg" alt="Listen to your Pulseq — gradient waveform audio preview" width="760">
+  <a href="https://5o1.github.io/Listen-to-your-pulseq/"><img src="webview/assets/logo-lockup.svg" alt="Listen to your Pulseq - gradient waveform audio preview" width="760"></a>
 </p>
 
-# Listen-to-your-pulseq
+# [Listen-to-your-pulseq](https://5o1.github.io/Listen-to-your-pulseq/)
 
-Audio preview for pypulseq gradient waveforms — Python package + web demo.
+Audio preview for pypulseq gradient waveforms - Python package + web demo,
+designed for MRI music and gradient noise preview.
+
+Convert PyPulseq `.seq` / `.bseq` sequences into audible gradient waveforms,
+visualize the combined Gx/Gy/Gz spectrum, and export WAV files for MRI sound
+design, gradient noise analysis, and sequence sonification.
 
 [![Test](https://github.com/5o1/Listen-to-your-pulseq/actions/workflows/test.yml/badge.svg)](https://github.com/5o1/Listen-to-your-pulseq/actions/workflows/test.yml)
 [![Pages](https://github.com/5o1/Listen-to-your-pulseq/actions/workflows/pages.yml/badge.svg)](https://github.com/5o1/Listen-to-your-pulseq/actions/workflows/pages.yml)
@@ -94,9 +99,9 @@ for diagnosis. Set `PW_PORT` to override the local test server port.
 ## Release
 
 Create a tag matching the version in `pyproject.toml` (for example, `v0.2.0`).
-The release workflow builds and validates the Python wheel/sdist, publishes the
-Python distributions to PyPI, builds the static webview, and attaches the
-webview ZIP alongside the Python artifacts on the GitHub Release.
+The release workflow builds and validates the Python wheel/sdist, builds the
+static webview, and attaches the webview ZIP alongside the Python artifacts on
+the GitHub Release.
 
 ## License
 
