@@ -79,6 +79,8 @@ jobs:
         run: npm ci
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
+      - name: Build webview
+        run: npm run build
       - name: Run Playwright tests
         run: npm run test:ci
       - name: Upload Playwright diagnostics

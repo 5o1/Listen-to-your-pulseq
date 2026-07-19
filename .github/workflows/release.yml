@@ -59,10 +59,10 @@ jobs:
           node --check serve.mjs
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
-      - name: Run browser tests
-        run: npm run test:ci
       - name: Build webview
         run: npm run build
+      - name: Run browser tests
+        run: npm run test:ci
       - name: Package webview
         run: |
           cd dist
