@@ -74,26 +74,9 @@ jobs:
           path: webview/listen-to-your-pulseq-webview-*.zip
           if-no-files-found: error
 
-  pypi:
-    runs-on: ubuntu-latest
-    needs: python-package
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - name: Download Python distributions
-        uses: actions/download-artifact@v4
-        with:
-          name: python-dist
-          path: dist
-      - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          packages-dir: dist/
-
   github-release:
     runs-on: ubuntu-latest
-    needs: [python-package, webview-package, pypi]
+    needs: [python-package, webview-package]
     permissions:
       contents: write
     steps:
