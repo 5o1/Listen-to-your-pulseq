@@ -1,74 +1,103 @@
-# Listen-to-your-pulseq
-Add a feature to 'pypulseq.Sequence' in order to provide audio preview for grad waveform.
+<p align="center">
+  <img src="webview/assets/logo-lockup.svg" alt="Listen to your Pulseq — gradient waveform audio preview" width="760">
+</p>
 
+# Listen-to-your-pulseq
+
+Audio preview for pypulseq gradient waveforms — Python package + web demo.
+
+[![Test](https://github.com/5o1/Listen-to-your-pulseq/actions/workflows/test.yml/badge.svg)](https://github.com/5o1/Listen-to-your-pulseq/actions/workflows/test.yml)
+[![Pages](https://github.com/5o1/Listen-to-your-pulseq/actions/workflows/pages.yml/badge.svg)](https://github.com/5o1/Listen-to-your-pulseq/actions/workflows/pages.yml)
 [![pypulseq](https://img.shields.io/badge/-pypulseq-gray?logo=github)](https://github.com/imr-framework/pypulseq)
 
-## Usage
+## Web Demo
 
-**Example:**
+**[Launch demo](https://5o1.github.io/Listen-to-your-pulseq/)** — upload `.seq` or `.bseq` files, hear gradient waveforms, seek with the playback progress bar, and export WAV.
+
+The parser is based on [seqeyes_plugin](https://github.com/bughht/seqeyes_plugin) (MIT).
+
+## Python Package
+
+```bash
+pip install pypulseq_audio
+```
 
 ```python
 from pypulseq import Sequence
 import pypulseq_audio
+pypulseq_audio.patch()
 
 seq = Sequence()
-
+# ... build your sequence ...
 seq.listen(play_now=True)
-
-duration = seq.duration_update(append_only=True)
 ```
 
-### **Interface documentation:**
+### API
 
+**`Sequence.listen(...)`** returns `np.ndarray`
 
-**Sequence.duration_update**
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `speaker` | `Callable \| None` | `None` | Callback `(waveform, rate)`. Auto-detects Jupyter. |
+| `save_dir` | `str \| None` | `None` | Directory to save WAV. |
+| `save_path` | `str \| None` | `None` | Deprecated alias for `save_dir`. |
+| `save_filename` | `str` | `'seq.wav'` | Output filename. |
+| `time_range` | `tuple` | `(0, inf)` | Time range in seconds; output is trimmed to this interval. |
+| `time_disp` | `str` | `'s'` | Deprecated compatibility option; `time_range` is always in seconds. |
+| `grad_disp` | `str` | `'kHz/m'` | Output scale: `'kHz/m'` or `'mT/m'`. |
+| `play_now` | `bool` | `True` | Play immediately. |
+| `rate` | `int` | `44100` | Sample rate in Hz. |
 
-```python
-"""
-Duration calculation with reduced time cost. Designed for environments where duration is used as an iteration condition.
+The three gradient channels are sampled and summed into one waveform.
 
-Parameters
-----------
-self : Sequence
-    The sequence object.
-append_only : bool, optional
-    If you can ensure that blocks will only be added sequentially and not deleted or inserted, then True. Else False.
+**`Sequence.duration_update(append_only=True)`** returns `float`
 
-Returns
-----------
-duration : float
-    The total duration of the sequence in seconds.
-"""
+## Development
+
+```bash
+pip install -e ".[jupyter,test]"
+pytest tests/ -v
 ```
 
-**Sequence.listen**
-```python
-"""
-Listen to the waveform of the sequence.
+To run the Playwright browser automation tests:
 
-Parameters
-----------
-self : Sequence
-    The sequence object.
-speaker : callable, optional
-    The speaker function to play the audio. If None, use IPython.display.Audio.
-save_path : str, optional
-    The path to save the waveform as a .wav file.
-time_range : tuple, optional
-    The time range to listen to, in seconds. Default is (0, np.inf).
-time_disp : str, optional
-    The time unit for the waveform. Default is 's'.
-grad_disp : str, optional
-    The gradient unit for the waveform. Default is 'kHz/m'.
-play_now : bool, optional
-    Whether to play the audio immediately. Default is True.
-rate : int, optional
-    The sample rate for the audio. Default is 44100.
-
-Returns
--------
-waveform : np.ndarray
-    The waveform of the sequence.
-
-"""
+```bash
+cd webview
+npm ci
+npx playwright install chromium
+npm test
 ```
+
+Build the static webview artifact locally:
+
+```bash
+cd webview
+npm run build
+```
+
+The output is written to `webview/dist/`.
+
+Useful Playwright commands:
+
+```bash
+npm run test:headed   # run with a visible browser
+npm run test:debug    # open the Playwright inspector
+npm run test:ui       # interactive test runner
+npm run test:report   # open the latest HTML report
+npm run serve         # serve the built webview
+```
+
+The GitHub Actions browser job installs Chromium, runs the suite with retries,
+and uploads the HTML report, JUnit output, traces, screenshots, and retry videos
+for diagnosis. Set `PW_PORT` to override the local test server port.
+
+## Release
+
+Create a tag matching the version in `pyproject.toml` (for example, `v0.2.0`).
+The release workflow builds and validates the Python wheel/sdist, publishes the
+Python distributions to PyPI, builds the static webview, and attaches the
+webview ZIP alongside the Python artifacts on the GitHub Release.
+
+## License
+
+MIT. See [LICENSE](LICENSE) and [NOTICE](NOTICE) for third-party attributions.

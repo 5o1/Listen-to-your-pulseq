@@ -1,0 +1,93 @@
+name: Test
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          pip install -e ".[jupyter,test]"
+      - name: Run unit tests
+        run: pytest tests/ -v -k "not integration"
+      - name: Run integration tests
+        run: pytest tests/ -v -m integration
+
+  python-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build and install package
+        run: |
+          python -m pip install --upgrade build
+          python -m build
+          python -m pip install dist/*.whl
+          (cd /tmp && python -c "import pypulseq_audio")
+
+  web-syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Check JS syntax and build output
+        working-directory: webview
+        run: |
+          for f in js/*.js; do
+            node --check "$f"
+          done
+          node --check build.mjs
+          node --check serve.mjs
+          npm run build
+          test -f dist/index.html
+          test -d dist/js
+          test -f dist/LICENSE
+          test -f dist/NOTICE
+          test -f dist/assets/logo-mark.svg
+          test -f dist/assets/logo-lockup.svg
+
+  web-playwright:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: webview
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: webview/package-lock.json
+      - name: Install web dependencies
+        run: npm ci
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run Playwright tests
+        run: npm run test:ci
+      - name: Upload Playwright diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results-${{ github.run_attempt }}
+          path: |
+            webview/test-results/
+            webview/playwright-report/
+          retention-days: 14
+          if-no-files-found: ignore

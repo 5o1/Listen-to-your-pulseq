@@ -49,6 +49,10 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
+webview/node_modules/
+webview/dist/
+webview/playwright-report/
+webview/test-results/
 cover/
 
 # Translations
@@ -172,3 +176,4 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+

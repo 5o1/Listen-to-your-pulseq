@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pypulseq_audio"
+version = "0.2.0"
+description = "Audio preview for pypulseq gradient waveforms"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+authors = [{ name = "Listen-to-your-pulseq contributors" }]
+keywords = ["pypulseq", "MRI", "gradient", "audio"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "numpy>=1.19",
+    "scipy>=1.8",
+    "pypulseq>=1.4",
+]
+
+[project.optional-dependencies]
+jupyter = ["ipython"]
+test = ["pytest>=7"]
+build = ["build"]
+
+[project.urls]
+Homepage = "https://github.com/5o1/Listen-to-your-pulseq"
+Repository = "https://github.com/5o1/Listen-to-your-pulseq"
+Issues = "https://github.com/5o1/Listen-to-your-pulseq/issues"
+
+[tool.setuptools.packages.find]
+include = ["pypulseq_audio*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "integration: tests that exercise a real pypulseq Sequence",
+]

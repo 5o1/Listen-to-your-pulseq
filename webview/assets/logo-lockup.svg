@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 150" role="img" aria-labelledby="title desc">
+  <title id="title">Listen to your Pulseq</title>
+  <desc id="desc">Listen to your Pulseq logo with matching gradient waveforms and a pair of beamed eighth notes</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="760" y2="150" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0d1b35"/>
+      <stop offset="1" stop-color="#11152d"/>
+    </linearGradient>
+    <linearGradient id="topWave" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#6ee7f9"/>
+      <stop offset="1" stop-color="#72a8ff"/>
+    </linearGradient>
+    <linearGradient id="bottomWave" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#fbbf72"/>
+      <stop offset="1" stop-color="#fb7185"/>
+    </linearGradient>
+    <path id="waveShape" d="M9 0h13l7-16h17l8 16h8"/>
+  </defs>
+  <rect width="760" height="150" rx="30" fill="url(#bg)"/>
+  <g transform="translate(24 27)">
+    <rect width="96" height="96" rx="24" fill="#162b54"/>
+    <use href="#waveShape" transform="translate(0 35)" fill="none" stroke="url(#topWave)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <use href="#waveShape" transform="translate(0 72)" fill="none" stroke="url(#bottomWave)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M49.808 25L84.808 25L84.808 58.646L80.808 58.646L80.808 33L53.808 33L53.808 64.646L49.808 64.646Z" fill="#f8fbff"/>
+    <ellipse cx="45" cy="66" rx="9" ry="6" transform="rotate(-16 45 66)" fill="#f8fbff"/>
+    <ellipse cx="76" cy="60" rx="9" ry="6" transform="rotate(-16 76 60)" fill="#f8fbff"/>
+  </g>
+  <text x="150" y="77" fill="#f1f5ff" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="34" font-weight="700" letter-spacing="-0.8">Listen to your Pulseq</text>
+  <text x="153" y="105" fill="#94a3b8" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="14" letter-spacing="1.5">GRADIENT WAVEFORM AUDIO PREVIEW</text>
+</svg>
